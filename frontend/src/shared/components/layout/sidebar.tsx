@@ -1,17 +1,17 @@
-import { ChevronDown, ChevronsUpDown, HelpCircle, ReceiptText, StoreIcon, type LucideIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronDown, ChevronsUpDown, LayoutDashboard, ReceiptText, StoreIcon, Warehouse, type LucideIcon } from "lucide-react";
+import { useState } from "react";
 import { NavLink, useLocation } from "react-router";
 
 const SidebarMenu = ({
     title,
-    path,
+    url,
     Icon,
-} : {title: string, path: string,Icon: LucideIcon}) => {
+} : {title: string, url: string,Icon: LucideIcon}) => {
     return (
         <NavLink 
-            to={path} 
-            className="w-full p-2.5 flex items-center gap-4
-                        rounded-sm hover:bg-gray-200">
+            to={url} 
+            className="w-full p-2.5 flex items-center gap-2
+                    border border-white rounded-sm hover:bg-gray-200 hover:border-gray-500">
             <Icon size={18} />
             <p className="text-sm">{title}</p>
         </NavLink>
@@ -28,31 +28,30 @@ const SidebarCollapseMenu = (
         Icon: LucideIcon,
         submenus: {
             title: string,
-            path: string,
+            url: string,
         }[],
     }
 ) => {
 
-    const [openState, setOpenState] = useState(false);
     const location = useLocation();
-
-
-    if (submenus.some(submenu => submenu.path === location.pathname)) setOpenState(true);
+    const [openState, setOpenState] = useState(submenus.some(submenu => submenu.url === location.pathname));
 
     return (
-        <div className="rounded-sm overflow-hidden">
+        <div className="rounded-sm">
             <button
                 type="button"
                 onClick={() => setOpenState(prev => !prev)}
                 className="w-full p-2.5 flex items-center gap-4
-                           rounded-sm hover:bg-gray-200"
+                           border border-white rounded-sm hover:bg-gray-200 hover:border-gray-500"
             >
                 <div className="flex items-center flex-1 gap-2">
-                    <ReceiptText size={18} />
+                    <Icon 
+                        size={18}
+                    />
                     <p className="text-sm">{title}</p>
                 </div>
 
-                <Icon 
+                <ChevronDown 
                     size={18}
                     className={`transition-transform duration-300 ${
                         openState ? "rotate-180" : ""
@@ -61,7 +60,6 @@ const SidebarCollapseMenu = (
 
             </button>
 
-            {/* Submenu */}
             <nav
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
                     openState
@@ -69,13 +67,13 @@ const SidebarCollapseMenu = (
                         : "max-h-0 opacity-0"
                 }`}
             >
-                <div className="space-y-2 pb-2">
+                <div className="space-y-2 py-2">
                     {submenus.map((item, index) => (
                         <NavLink
                             key={index}
-                            to={item.path}
-                            className="block ml-8 p-2.5 rounded-sm
-                                       hover:bg-gray-200 cursor-pointer"
+                            to={item.url}
+                            className={`block ml-8 p-2.5 rounded-sm
+                                       hover:bg-gray-200 cursor-pointer ${location.pathname === item.url && "bg-gray-200"}`}
                         >
                             <p className="text-sm">{item.title}</p>
                         </NavLink>
@@ -110,31 +108,28 @@ const SwitchStore = () => {
 }
 
 const Sidebar = () => {
+
     return (
         <aside className="border-r w-2xs h-screen px-2 py-2 space-y-2">
             <div>
                 <SwitchStore />
             </div>
             <div className="space-y-2">
-                <SidebarCollapseMenu title={"Sales"} Icon={ChevronDown} submenus={[
-                    { title: "Sales list", path: "/sales" },
-                    { title: "Sales report", path: "/sales/report" },
-                    { title: "Invoices", path: "/sales/invoice" },
+                
+                <SidebarMenu title="Dashboard" url="/" Icon={LayoutDashboard}/>
+
+                <SidebarCollapseMenu title={"Sales"} Icon={ReceiptText} submenus={[
+                    { title: "Sales list", url: "/sales" },
+                    { title: "Sales report", url: "/sales/report" },
+                    { title: "Invoices", url: "/sales/invoice" },
                 ]} />
 
-                <SidebarCollapseMenu title={"Sales"} Icon={ChevronDown} submenus={[
-                    { title: "Sales list", path: "/sales" },
-                    { title: "Sales report", path: "/sales/report" },
-                    { title: "Invoices", path: "/sales/invoice" },
+                <SidebarCollapseMenu title={"Inventory"} Icon={Warehouse} submenus={[
+                    { title: "Sales list", url: "/inventory" },
+                    { title: "Sales report", url: "/sales/report" },
+                    { title: "Invoices", url: "/sales/invoice" },
                 ]} />
 
-                <SidebarCollapseMenu title={"Sales"} Icon={ChevronDown} submenus={[
-                    { title: "Sales list", path: "/sales" },
-                    { title: "Sales report", path: "/sales/report" },
-                    { title: "Invoices", path: "/sales/invoice" },
-                ]} />
-
-                <SidebarMenu title="Help" path="/help" Icon={HelpCircle}/>
             </div>
 
         </aside>

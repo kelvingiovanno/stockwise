@@ -1,7 +1,11 @@
 import { createBrowserRouter } from "react-router";
-import SignInPage from "./features/sign-in/pages/signin.pages";
+
 import DashboardLayout from "./layouts/dashboard.layout";
+
+import SignInPage from "./features/sign-in/pages/signin.pages";
 import DashboardPage from "./features/dashboard/pages/dashboard.pages";
+import SalesListPage from "./features/sales/pages/sales-list.pages";
+import InventoryListPage from "./features/inventory/pages/inventory-list.pages";
 
 const router = createBrowserRouter([
     {
@@ -11,6 +15,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <DashboardPage />
+            },
+            {
+                path: 'sales',
+                element: <SalesListPage />
+            },
+            {
+                path: 'inventory',
+                element: <InventoryListPage />
             },
         ],
     },
