@@ -1,4 +1,4 @@
-import { Box, ChartNoAxesCombined, ChevronDown, ChevronsUpDown, LayoutDashboard, ReceiptText, Settings, ShoppingCart, StoreIcon, Truck, Users, Warehouse, type LucideIcon } from "lucide-react";
+import { Box, ChartNoAxesCombined, Check, ChevronDown, ChevronsUpDown, LayoutDashboard, ReceiptText, Settings, ShoppingCart, StoreIcon, Truck, Users, Warehouse, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router";
 
@@ -7,11 +7,14 @@ const SidebarMenu = ({
     url,
     Icon,
 } : {title: string, url: string,Icon: LucideIcon}) => {
+
+    const currentPathname = useLocation().pathname;
+
     return (
         <NavLink 
             to={url} 
-            className="w-full p-2.5 flex items-center gap-2
-                    border border-white rounded-sm hover:bg-gray-200 hover:border-gray-500">
+            className={`w-full p-2.5 flex items-center gap-2
+                    border border-white rounded-sm hover:bg-gray-200 hover:border-gray-500 ${currentPathname === url && "bg-gray-200"}`}>
             <Icon size={18} />
             <p className="text-sm">{title}</p>
         </NavLink>
@@ -46,13 +49,13 @@ const SidebarCollapseMenu = (
             >
                 <div className="flex items-center flex-1 gap-2">
                     <Icon 
-                        size={18}
+                        size={16}
                     />
                     <p className="text-sm">{title}</p>
                 </div>
 
                 <ChevronDown 
-                    size={18}
+                    size={14}
                     className={`transition-transform duration-300 ${
                         openState ? "rotate-180" : ""
                     }`}
@@ -72,8 +75,8 @@ const SidebarCollapseMenu = (
                         <NavLink
                             key={index}
                             to={item.url}
-                            className={`block ml-8 p-2.5 rounded-sm
-                                       hover:bg-gray-200 cursor-pointer ${location.pathname === item.url && "bg-gray-200"}`}
+                            className={`block ml-8 p-2.5 rounded-sm border border-white
+                                       hover:bg-gray-200 hover:border-gray-500 cursor-pointer ${location.pathname === item.url && "bg-gray-200"}`}
                         >
                             <p className="text-sm">{item.title}</p>
                         </NavLink>
@@ -89,53 +92,69 @@ const SwitchStore = () => {
     const [open, setOpen] = useState<boolean>(false)
         
     return (
-        <div className="relative space-y-2">
-            <p className="text-xs text-gray-500">Current Store</p>
+        <div className="relative">
+            
+            <p className="text-xs text-gray-500 mb-2">Current Store</p>
+            
             <button 
-                className="p-2 flex justify-between items-center border w-full rounded-sm"
+                className="p-2.5 flex justify-between items-center border w-full rounded-sm"
                 onClick={() => setOpen(!open)}
             >
                 <div className="flex items-center gap-2">
                     <div className="p-2 bg-gray-200 rounded-sm">
-                        <StoreIcon size={22}/>
+                        <StoreIcon size={18}/>
                     </div>
                     <div>
                         <p className="text-sm font-semibold text-left">Selat Sindo Tractor</p>
                         <p className="text-xs text-left">Super Admin</p>
                     </div>
                 </div>
-                <ChevronsUpDown  size={18}/>
+                <ChevronsUpDown  size={14}/>
             </button>
-            <div className={`absolute w-3xs max-h-60 left-0 top-24 bg-white p-2 rounded-sm border space-y-2 ${open ? "hidden" : 'block'}`}>
-                <p className="text-xs text-gray-500">Stores</p>
-                <div className="flex gap-2">
+            
+            <div className={`absolute w-3xs max-h-60 left-0 top-24 bg-white p-2.5 rounded-sm border space-y-2.5 ${open ? "hidden" : 'block'}`}>
+            
+                <p className="text-xs text-gray-500">Chosee stores</p>
+            
+                <div className="flex items-center justify-between">
+                    <div className="flex gap-2.5">
+                        <div className="p-2 bg-gray-200 rounded-sm">
+                        <StoreIcon size={18} />
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-left">Sindo Diesel</p>
+                            <p className="text-xs text-left">Super Admin</p>
+                        </div>
+                    </div>
+                    
+                    <div className="rounded-full bg-gray-500 p-0.5">
+                        <Check size={12} className="text-white"/>
+                    </div>
+
+                </div>
+
+                <div className="flex gap-2.5">
                     <div className="p-2 bg-gray-200 rounded-sm">
                         <StoreIcon size={18} />
                     </div>
                     <div>
-                        <p className="text-xs font-semibold text-left">Selat Sindo Tractor</p>
+                        <p className="text-sm font-semibold text-left">Sindo Diesel</p>
                         <p className="text-xs text-left">Super Admin</p>
                     </div>
                 </div>
-                <div className="flex gap-2">
+
+                <div className="flex gap-2.5">
                     <div className="p-2 bg-gray-200 rounded-sm">
                         <StoreIcon size={18} />
                     </div>
                     <div>
-                        <p className="text-xs font-semibold text-left">Selat Sindo Tractor</p>
+                        <p className="text-sm font-semibold text-left">Sindo Diesel</p>
                         <p className="text-xs text-left">Super Admin</p>
                     </div>
                 </div>
-                <div className="flex gap-2">
-                    <div className="p-2 bg-gray-200 rounded-sm">
-                        <StoreIcon size={18} />
-                    </div>
-                    <div>
-                        <p className="text-xs font-semibold text-left">Selat Sindo Tractor</p>
-                        <p className="text-xs text-left">Super Admin</p>
-                    </div>
-                </div>
+
             </div>
+        
         </div>
     )  
 }
@@ -145,19 +164,19 @@ const Sidebar = () => {
     const store_id = "STORE-001";
 
     return (
-        <aside className="flex flex-col border-r w-2xs h-screen ">
-            <div className="p-4">
+        <aside className="min-w-2xs h-screen flex flex-col gap-6 border-r">
+            
+            <div className="px-4 pt-4">
                 <SwitchStore />
             </div>
-            <div className="flex-1 px-4 space-y-2 overflow-y-auto ">
-                
-                <div className="border-t pt-2 ">
-                    <SidebarMenu title="Dashboard" url="/" Icon={LayoutDashboard}/>
-                </div>
 
-                <div className="space-y-2 py-2">
+            <div className="px-4 space-y-6 overflow-y-auto">
+
+                <div className="space-y-2">
 
                     <p className="text-xs text-gray-500">Transactions</p>
+                    
+                    <SidebarMenu title="Dashboard" url="/" Icon={LayoutDashboard}/>
 
                     <SidebarCollapseMenu title={"Sales"} Icon={ShoppingCart} submenus={[
                         { title: "All Sales", url: `/stores/${store_id}/sales`},
@@ -189,7 +208,7 @@ const Sidebar = () => {
                 </div>
             
                 
-                <div className="space-y-2 p-y-2">
+                <div className="space-y-2">
 
                     <p className="text-xs text-gray-500">Managements</p>
 
@@ -213,7 +232,8 @@ const Sidebar = () => {
                     ]} />
 
                 </div>
-                <div className="space-y-2 py-2">
+
+                <div className="space-y-2">
 
                     <p className="text-xs text-gray-500">Systems</p>
 
