@@ -2,10 +2,11 @@ import { createBrowserRouter } from "react-router";
 
 import DashboardLayout from "./layouts/dashboard.layout";
 
-import SignInPage from "./features/sign-in/pages/signin.pages";
-import DashboardPage from "./features/dashboard/pages/dashboard.pages";
-import SalesListPage from "./features/sales/pages/sales-list.pages";
-import InventoryListPage from "./features/inventory/pages/inventory-list.pages";
+import DashboardPage from "@/features/dashboard/pages/dashboard.pages";
+import InventoryListPage from "@/features/inventory/pages/inventory-list.pages";
+import SalesListPage from "@/features/sales/pages/sales-list.pages";
+import SignInPage from "@/features/sign-in/pages/signin.pages";
+
 
 const router = createBrowserRouter([
     {

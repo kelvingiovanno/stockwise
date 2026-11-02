@@ -66,7 +66,7 @@ const SidebarCollapseMenu = (
             <nav
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${
                     openState
-                        ? "max-h-60 opacity-100"
+                        ? "max-h-96 opacity-100"
                         : "max-h-0 opacity-0"
                 }`}
             >
@@ -109,17 +109,36 @@ const SwitchStore = () => {
                         <p className="text-xs text-left">Super Admin</p>
                     </div>
                 </div>
+
                 <ChevronsUpDown  size={14}/>
+            
             </button>
             
-            <div className={`absolute w-3xs max-h-60 left-0 top-24 bg-white p-2.5 rounded-sm border space-y-2.5 ${open ? "hidden" : 'block'}`}>
+            <div className={`z-10 absolute w-3xs top-6 bg-white rounded-sm border transition-all duration-300 ease-in-out ${open ? "opacity-100 left-67" : 'opacity-0 left-64 pointer-events-none'}`}>
             
-                <p className="text-xs text-gray-500">Chosee stores</p>
+                <p className="text-xs text-gray-500 p-2.5">Chosee stores</p>
             
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-2.5 bg-gray-200 border border-gray-500 rounded-xs cursor-pointer hover:bg-gray-100">
                     <div className="flex gap-2.5">
-                        <div className="p-2 bg-gray-200 rounded-sm">
-                        <StoreIcon size={18} />
+                        <div className="p-2 bg-gray-300 rounded-sm">
+                            <StoreIcon size={18} />
+                        </div>
+                        <div className="text-left">
+                            <p className="text-sm font-semibold">Sindo Diesel</p>
+                            <p className="text-xs">Super Admin</p>
+                        </div>
+                    </div>
+                    
+                    <div className="rounded-full bg-gray-500 p-0.5">
+                        <Check size={12} className="text-white"/>
+                    </div>
+
+                </div>
+
+                <div className="flex items-center justify-between p-2.5 hover:bg-gray-100">
+                    <div className="flex gap-2.5">
+                        <div className="p-2 bg-gray-300 rounded-sm">
+                            <StoreIcon size={18} />
                         </div>
                         <div>
                             <p className="text-sm font-semibold text-left">Sindo Diesel</p>
@@ -133,26 +152,24 @@ const SwitchStore = () => {
 
                 </div>
 
-                <div className="flex gap-2.5">
-                    <div className="p-2 bg-gray-200 rounded-sm">
-                        <StoreIcon size={18} />
+                <div className="flex items-center justify-between p-2.5 hover:bg-gray-100">
+                    <div className="flex gap-2.5">
+                        <div className="p-2 bg-gray-300 rounded-sm">
+                            <StoreIcon size={18} />
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-left">Sindo Diesel</p>
+                            <p className="text-xs text-left">Super Admin</p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-sm font-semibold text-left">Sindo Diesel</p>
-                        <p className="text-xs text-left">Super Admin</p>
+                    
+                    <div className="rounded-full bg-gray-500 p-0.5">
+                        <Check size={12} className="text-white"/>
                     </div>
+
                 </div>
 
-                <div className="flex gap-2.5">
-                    <div className="p-2 bg-gray-200 rounded-sm">
-                        <StoreIcon size={18} />
-                    </div>
-                    <div>
-                        <p className="text-sm font-semibold text-left">Sindo Diesel</p>
-                        <p className="text-xs text-left">Super Admin</p>
-                    </div>
-                </div>
-
+               
             </div>
         
         </div>
@@ -161,10 +178,12 @@ const SwitchStore = () => {
 
 const Sidebar = () => {
 
+    const [open, setOpen] = useState<boolean>(false);
+
     const store_id = "STORE-001";
 
     return (
-        <aside className="min-w-2xs h-screen flex flex-col gap-6 border-r">
+        <aside className="fixed -left-100 md:relative md:left-0 min-w-2xs h-screen flex flex-col gap-6 border-r">
             
             <div className="px-4 pt-4">
                 <SwitchStore />
@@ -205,6 +224,7 @@ const Sidebar = () => {
                         { title: "Suppliers", url: `/suppliers` },
                         { title: "Purchase Returns", url: `/stores/${store_id}/purchases/returns` },
                     ]} />
+                    
                 </div>
             
                 
