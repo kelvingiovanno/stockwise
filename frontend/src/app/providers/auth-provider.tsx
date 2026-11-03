@@ -11,7 +11,7 @@ type AuthProviderProps = {
     children: ReactNode;
 }
 
-const AuthProvider = ({children}: AuthProviderProps) => {
+export const AuthProvider = ({children}: AuthProviderProps) => {
     
     const [isAuthenticated, setAuthenticated] = useState<boolean>(false)
     
@@ -31,10 +31,11 @@ const AuthProvider = ({children}: AuthProviderProps) => {
     );
 }
 
-const useAuth = () => {
+export const useAuth = () => {
     
     const ctx = useContext(AuthContext);
     
     if(ctx === undefined) throw new Error('useAuth must be used inside AuthProvider');
 
+    return ctx
 }
