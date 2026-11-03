@@ -1,5 +1,6 @@
+import { useSidebar } from "@/app/providers/sidebar-provider";
 import { Box, ChartNoAxesCombined, Check, ChevronDown, ChevronsUpDown, LayoutDashboard, ReceiptText, Settings, ShoppingCart, StoreIcon, Truck, Users, Warehouse, type LucideIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 
 const SidebarMenu = ({
@@ -89,7 +90,12 @@ const SidebarCollapseMenu = (
 
 const SwitchStore = () => {
     
+    const {isOpen} = useSidebar();
     const [open, setOpen] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (isOpen === false ) setOpen(false);
+    }, [isOpen])
         
     return (
         <div className="relative">
@@ -114,7 +120,7 @@ const SwitchStore = () => {
             
             </button>
             
-            <div className={`z-10 absolute w-3xs top-6 bg-white rounded-sm border transition-all duration-300 ease-in-out ${open ? "opacity-100 left-67" : 'opacity-0 left-64 pointer-events-none'}`}>
+            <div className={`z-10 absolute w-3xs top-6 bg-white rounded-sm border border-gray-300 transition-all duration-300 ease-in-out ${open ? "opacity-100 left-72" : 'opacity-0 left-64 pointer-events-none'}`}>
             
                 <p className="text-xs text-gray-500 p-2.5">Chosee stores</p>
             
@@ -178,97 +184,100 @@ const SwitchStore = () => {
 
 const Sidebar = () => {
 
-    const [open, setOpen] = useState<boolean>(false);
+    const {isOpen, toggleSidebar} = useSidebar(); 
 
     const store_id = "STORE-001";
 
     return (
-        <aside className="fixed -left-100 md:relative md:left-0 min-w-2xs h-screen flex flex-col gap-6 border-r">
-            
-            <div className="px-4 pt-4">
-                <SwitchStore />
-            </div>
-
-            <div className="px-4 space-y-6 overflow-y-auto">
-
-                <div className="space-y-2">
-
-                    <p className="text-xs text-gray-500">Transactions</p>
-                    
-                    <SidebarMenu title="Dashboard" url="/" Icon={LayoutDashboard}/>
-
-                    <SidebarCollapseMenu title={"Sales"} Icon={ShoppingCart} submenus={[
-                        { title: "All Sales", url: `/stores/${store_id}/sales`},
-                        { title: "Create Sale", url: `/stores/${store_id}/sales/new` },
-                        { title: "Returns", url: `/stores/${store_id}/sales/returns` },
-                    ]} />
-
-                    <SidebarCollapseMenu title={"Invoice"} Icon={ReceiptText} submenus={[
-                        { title: "All Invoices", url: `/stores/${store_id}/invoices`},
-                        { title: "Create Invoice", url: `/stores/${store_id}/invoices/new` },
-                        { title: "Payments", url: `/stores/${store_id}/invoices/payments` },
-                        { title: "Outstanding Invoices", url: `/stores/${store_id}/invoices/outstanding` },
-                    ]} />
-
-                    <SidebarCollapseMenu title={"Inventory"} Icon={Box} submenus={[
-                        { title: "All Product", url: `/stores/${store_id}/products` },
-                        { title: "Stock Level", url: `/stores/${store_id}/inventory/stock-levels` },
-                        { title: "Stock Movements", url: `/stores/${store_id}/inventory/movements` },
-                        { title: "Stock Adjustments", url: `/stores/${store_id}/inventory/adjustments` },
-                        { title: "Stock Transfers", url: `/stores/${store_id}/inventory/transfers` },
-                    ]} />
-
-                    <SidebarCollapseMenu title={"Purchasing"} Icon={Truck} submenus={[
-                        { title: "All Purchases", url: `/stores/${store_id}/purchases` },
-                        { title: "Create Purchases", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Suppliers", url: `/suppliers` },
-                        { title: "Purchase Returns", url: `/stores/${store_id}/purchases/returns` },
-                    ]} />
-                    
-                </div>
-            
+        <>
+            <div className={`md:hidden fixed w-full h-screen transition-all duration-300 ease-in-out  ${isOpen ? "bg-black/10 backdrop-blur-sm" : "bg-black/0 backdrop-blur-none pointer-events-none"}`} onClick={() => {toggleSidebar()}}/>
+            <aside className={`bg-white transition-all duration-300 ease-in-out fixed md:static min-w-2xs h-screen flex flex-col gap-6 border-r ${isOpen ? "translate-x-0 opacity-100 pointer-events-none:" : "-translate-x-full opacity-0"} md:translate-x-0 md:opacity-100`}>
                 
-                <div className="space-y-2">
-
-                    <p className="text-xs text-gray-500">Managements</p>
-
-                    <SidebarCollapseMenu title={"Customers"} Icon={Users} submenus={[
-                        { title: "All Customers", url: `/stores/${store_id}/purchases` },
-                        { title: "Create Customer", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Customer Price Lists", url: `/suppliers` },
-                        { title: "Purchase Transactions", url: `/stores/${store_id}/purchases/returns` },
-                    ]} />
-
-                    <SidebarCollapseMenu title={"Stores"} Icon={Warehouse} submenus={[
-                        { title: "All Stores", url: `/stores/${store_id}/purchases` },
-                        { title: "Store Setttings", url: `/stores/${store_id}/purchases/new` },
-                    ]} />
-
-                    <SidebarCollapseMenu title={"Reports"} Icon={ChartNoAxesCombined} submenus={[
-                        { title: "Sales Reports", url: `/stores/${store_id}/purchases` },
-                        { title: "Inventory Reports", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Profit & Loss", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Purchasing Reports", url: `/stores/${store_id}/purchases/new` },
-                    ]} />
-
+                <div className="px-4 pt-4">
+                    <SwitchStore />
                 </div>
 
-                <div className="space-y-2">
+                <div className="px-4 space-y-6 overflow-y-auto">
 
-                    <p className="text-xs text-gray-500">Systems</p>
+                    <div className="space-y-2">
 
-                    <SidebarCollapseMenu title={"Settings"} Icon={Settings} submenus={[
-                        { title: "Users & Roles", url: `/stores/${store_id}/purchases` },
-                        { title: "Product Categories", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Unit Of Measurement", url: `/stores/${store_id}/purchases/new` },
-                        { title: "Payment Methods", url: `/stores/${store_id}/purchases/new` },
-                        { title: "General Settings", url: `/stores/${store_id}/purchases/new` },
-                    ]} />
+                        <p className="text-xs text-gray-500">Transactions</p>
+                        
+                        <SidebarMenu title="Dashboard" url="/" Icon={LayoutDashboard}/>
 
+                        <SidebarCollapseMenu title={"Sales"} Icon={ShoppingCart} submenus={[
+                            { title: "All Sales", url: `/stores/${store_id}/sales`},
+                            { title: "Create Sale", url: `/stores/${store_id}/sales/new` },
+                            { title: "Returns", url: `/stores/${store_id}/sales/returns` },
+                        ]} />
+
+                        <SidebarCollapseMenu title={"Invoice"} Icon={ReceiptText} submenus={[
+                            { title: "All Invoices", url: `/stores/${store_id}/invoices`},
+                            { title: "Create Invoice", url: `/stores/${store_id}/invoices/new` },
+                            { title: "Payments", url: `/stores/${store_id}/invoices/payments` },
+                            { title: "Outstanding Invoices", url: `/stores/${store_id}/invoices/outstanding` },
+                        ]} />
+
+                        <SidebarCollapseMenu title={"Inventory"} Icon={Box} submenus={[
+                            { title: "All Product", url: `/stores/${store_id}/products` },
+                            { title: "Stock Level", url: `/stores/${store_id}/inventory/stock-levels` },
+                            { title: "Stock Movements", url: `/stores/${store_id}/inventory/movements` },
+                            { title: "Stock Adjustments", url: `/stores/${store_id}/inventory/adjustments` },
+                            { title: "Stock Transfers", url: `/stores/${store_id}/inventory/transfers` },
+                        ]} />
+
+                        <SidebarCollapseMenu title={"Purchasing"} Icon={Truck} submenus={[
+                            { title: "All Purchases", url: `/stores/${store_id}/purchases` },
+                            { title: "Create Purchases", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Suppliers", url: `/suppliers` },
+                            { title: "Purchase Returns", url: `/stores/${store_id}/purchases/returns` },
+                        ]} />
+                        
+                    </div>
+                
+                    
+                    <div className="space-y-2">
+
+                        <p className="text-xs text-gray-500">Managements</p>
+
+                        <SidebarCollapseMenu title={"Customers"} Icon={Users} submenus={[
+                            { title: "All Customers", url: `/stores/${store_id}/purchases` },
+                            { title: "Create Customer", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Customer Price Lists", url: `/suppliers` },
+                            { title: "Purchase Transactions", url: `/stores/${store_id}/purchases/returns` },
+                        ]} />
+
+                        <SidebarCollapseMenu title={"Stores"} Icon={Warehouse} submenus={[
+                            { title: "All Stores", url: `/stores/${store_id}/purchases` },
+                            { title: "Store Setttings", url: `/stores/${store_id}/purchases/new` },
+                        ]} />
+
+                        <SidebarCollapseMenu title={"Reports"} Icon={ChartNoAxesCombined} submenus={[
+                            { title: "Sales Reports", url: `/stores/${store_id}/purchases` },
+                            { title: "Inventory Reports", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Profit & Loss", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Purchasing Reports", url: `/stores/${store_id}/purchases/new` },
+                        ]} />
+
+                    </div>
+
+                    <div className="space-y-2">
+
+                        <p className="text-xs text-gray-500">Systems</p>
+
+                        <SidebarCollapseMenu title={"Settings"} Icon={Settings} submenus={[
+                            { title: "Users & Roles", url: `/stores/${store_id}/purchases` },
+                            { title: "Product Categories", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Unit Of Measurement", url: `/stores/${store_id}/purchases/new` },
+                            { title: "Payment Methods", url: `/stores/${store_id}/purchases/new` },
+                            { title: "General Settings", url: `/stores/${store_id}/purchases/new` },
+                        ]} />
+
+                    </div>
                 </div>
-            </div>
 
-        </aside>
+            </aside>
+        </>
     );
 }
 
