@@ -1,12 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service.js';
 
-@Controller()
+@Controller('users')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('get/as{*test}sa/donwload')
+  getHello(@Param('test') test: string[]) {
+
+    return {
+      wildcard: test,
+    }
+  }
+
+  @Post('new')
+  createUser(@Req() request: Request) {
+    return;
+
   }
 }
