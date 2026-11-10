@@ -1,0 +1,71 @@
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+  STAFF
+  VIEWER
+}
+
+enum StockStatus {
+  INSTOCK
+  LOWSTOCL
+  DISCONTINUE
+}
+
+Table users {
+  id varchar [pk]
+  name varchar [not null]
+  username varchar [unique]
+  password varchar [unique]
+  created_at timestamp [default: "now()"]
+  updated_at timestamp [null]
+  deleted_at timestamp [null]
+}
+
+Table stores {
+  id varchar [pk]
+  name varchar [not null]
+  created_at timestamp [default: "now()"]
+  updated_at timestamp [null]
+  deleted_at timestamp [null]
+}
+
+Table store_accesses {
+  id varchar [pk]
+  store_id varchar [ref: > stores.id]
+  user_id varchar [ref: > users.id]
+  role UserRole
+}
+
+Table uoms {
+  id varchar [pk]
+  name varchar [not null]
+  symbol varchar [unique]
+  description varchar [null]
+  created_at timestamp  [default: "now()"]
+  updated_at timestamp [null]
+  deleted_at timestamp [null]
+}
+
+Table categories {
+  id varchar [pk]
+  name varchar [unique]
+  description varchar [null]
+  created_at timestamp [default: "now()"]
+  updated_at timestamp [null]
+  deleted_at timestamp [null]
+}
+
+Table products {
+  id VARCHAR [PRIMARY KEY]
+  description VARCHAR [not null]
+  quantity decimal [not null]
+  status StockStatus [not null]
+  cost double [not null]
+  uoms_id varchar [ref: > uoms.id]
+  store_id varchar [ref: > stores.id]
+  assign_by varchar [ref: > users.id]
+  category_id varchar [ref: > categories.id]
+  created_at timestamp [default: "now()"]
+  updated_at timestamp [null]
+  deleted_at timestamp [null]
+}
