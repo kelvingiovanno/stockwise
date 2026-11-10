@@ -13,10 +13,41 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+  STAFF
+  VIEWER
+}
+
 model User {
-  id String @default(uuid())
+  id String @id @default(uuid())
   name String
   username String @unique
-  password String
+  password String 
   createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+
+  storeAccesses StoreAccess[]
+}
+
+model Store {
+  id String @id @default(uuid())
+  name String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+  deletedAt DateTime?
+  
+  storeAccesses StoreAccess[]
+}
+
+model StoreAccess {
+  id String @id @default(uuid())
+  store_id String @unique
+  user_id String @unique
+  userRole UserRole @default(VIEWER)
+
+  stores Store @relation(fields: [store_id], references: [id])
+  users User @relation(fields: [user_id], references: [id])
 }
