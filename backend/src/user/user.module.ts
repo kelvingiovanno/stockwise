@@ -5,9 +5,9 @@ import { DatabaseModule } from '../database/database.module.js';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule],
-  controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+    imports: [ConfigModule, DatabaseModule],
+    controllers: [UserController],
+    providers: [UserService],
+    exports: [UserService],
 })
 export class UserModule {}
