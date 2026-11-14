@@ -2,18 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-
-    const COOKIE_SECRET = process.env.COOKIE_SECRET;
-    const APP_PORT = process.env.APP_PORT;
-
-    const app = await NestFactory.create(AppModule, {
-        cookies: {
-            secret: COOKIE_SECRET,
-        },
-    });
+    const app = await NestFactory.create(AppModule);
 
     const configService = app.get(ConfigService);
 
@@ -25,10 +16,7 @@ async function bootstrap() {
         }),
     );
 
-    app.use(cookieParser(COOKIE_SECRET));
-
-    await app.listen(Number(APP_PORT));
-
+    await app.listen(configService.getOrThrow<number>('APP_PORT'));
 }
 
 await bootstrap();

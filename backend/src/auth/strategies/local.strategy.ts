@@ -6,7 +6,6 @@ import { AuthUser } from '../types/auth-user.type.js';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-
     constructor(private readonly authService: AuthService) {
         super({
             usernameField: 'username',
@@ -19,5 +18,4 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user) throw new UnauthorizedException();
         return user;
     }
-    
 }
