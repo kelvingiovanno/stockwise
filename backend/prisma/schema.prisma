@@ -13,8 +13,12 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
+enum SystemRole {
   SUPERADMIN
+  USER
+}
+
+enum UserRole {
   ADMIN
   STAFF
   VIEWER
@@ -22,6 +26,8 @@ enum UserRole {
 
 model User {
   id String @id @default(uuid())
+  code String @unique
+  systemRole SystemRole @default(USER)
   name String
   username String @unique
   password String 
@@ -34,6 +40,7 @@ model User {
 
 model Store {
   id String @id @default(uuid())
+  code String @unique
   name String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime?
@@ -44,10 +51,10 @@ model Store {
 
 model StoreAccess {
   id String @id @default(uuid())
-  store_id String @unique
-  user_id String @unique
+  storeId String @unique
+  userId String @unique
   userRole UserRole @default(VIEWER)
 
-  stores Store @relation(fields: [store_id], references: [id])
-  users User @relation(fields: [user_id], references: [id])
+  stores Store @relation(fields: [storeId], references: [id])
+  users User @relation(fields: [userId], references: [id])
 }

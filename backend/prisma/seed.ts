@@ -15,6 +15,8 @@ async function main() {
         update: {},
         create : {
             name: "admin",
+            code: "USER-1",
+            systemRole: "SUPERADMIN",
             username: "admin",
             password: "admin",
         },
@@ -25,6 +27,7 @@ async function main() {
         update: {},
         create: {
             name: "Sindo Diesel",
+            code: "STORE-1",
         }
     });
 
@@ -37,7 +40,7 @@ async function main() {
         create: {
             store_id: store.id,
             user_id: user.id,
-            userRole: UserRole.SUPERADMIN,
+            userRole: UserRole.ADMIN,
         }
     });
 
