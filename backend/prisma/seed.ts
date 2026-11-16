@@ -16,7 +16,7 @@ async function main() {
         create : {
             name: "admin",
             code: "USER-1",
-            systemRole: "SUPERADMIN",
+            role: "SUPERADMIN",
             username: "admin",
             password: "admin",
         },
@@ -33,13 +33,13 @@ async function main() {
 
     await prisma.storeAccess.upsert({
         where: {
-            store_id: store.id,
-            user_id: user.id
+            storeId: store.id,
+            userId: user.id
         },
         update: {},
         create: {
-            store_id: store.id,
-            user_id: user.id,
+            storeId: store.id,
+            userId: user.id,
             userRole: UserRole.ADMIN,
         }
     });

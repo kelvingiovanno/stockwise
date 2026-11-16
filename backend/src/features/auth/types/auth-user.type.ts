@@ -1,4 +1,4 @@
-import { UserRole } from "../../generated/prisma/enums.js";
+import { SystemRole } from "../../../generated/prisma/enums.js";
 
 export interface AuthUser {
     accessToken: string;
@@ -6,5 +6,5 @@ export interface AuthUser {
     id: string;
     name: string;
     username: string;
-    role: UserRole;
+    role: SystemRole;
 }

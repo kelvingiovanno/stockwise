@@ -3,13 +3,13 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service.js';
+import { PrismaService } from '../../database/prisma.service.js';
 import { CreateStoreDto } from './dto/create-store.dto.js';
 import { UpdateStoreDto } from './dto/update-store.dto.js';
 import { AssignStoreDto } from './dto/assign-store.dto.js';
 import { RevokeStoreDto } from './dto/revoke-store.dto.js';
 import { customAlphabet } from 'nanoid';
-import { Store, StoreAccess } from '../generated/prisma/client.js';
+import { Store, StoreAccess } from '../../generated/prisma/client.js';
 
 @Injectable()
 export class StoreService {

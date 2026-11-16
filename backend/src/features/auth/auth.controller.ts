@@ -12,11 +12,15 @@ import {
 } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard.js';
 import { HttpAdapterHost } from '@nestjs/core';
-import type { AuthRequest } from './types/auth-request.type.js';
+import type { AuthRequest } from './types/auth-request.type.js'; 
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly adapterHost: HttpAdapterHost) {}
+    constructor(
+        private readonly adapterHost: HttpAdapterHost,
+        private readonly configService: ConfigService,
+    ) {}
 
     @UseGuards(LocalAuthGuard)
     @Post('sign-in')
@@ -33,6 +37,7 @@ export class AuthController {
                 secure: true,
                 httpOnly: true,
                 sameSite: 'lax',
+                maxAge: Number(this.configService.getOrThrow<string>('JWT_REFRESH_EXPIRES_IN')),
             },
         );
 

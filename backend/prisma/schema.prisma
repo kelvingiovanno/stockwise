@@ -27,7 +27,7 @@ enum UserRole {
 model User {
   id String @id @default(uuid())
   code String @unique
-  systemRole SystemRole @default(USER)
+  role SystemRole @default(USER)
   name String
   username String @unique
   password String 
